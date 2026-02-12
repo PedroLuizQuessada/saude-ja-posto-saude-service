@@ -5,9 +5,11 @@ import com.example.saudejapostosaudeservice.datasources.NotificacaoDataSource;
 import com.example.saudejapostosaudeservice.datasources.PostoSaudeDataSource;
 import com.example.saudejapostosaudeservice.datasources.SolicitacaoVinculoPacientePostoSaudeDataSource;
 import com.example.saudejapostosaudeservice.datasources.UsuarioDataSource;
+import com.example.saudejapostosaudeservice.infrastructure.exceptions.TipoTokenException;
 import dtos.requests.*;
 import dtos.responses.*;
 import enums.EstadoEnum;
+import enums.TipoTokenEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,6 +26,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -279,6 +283,35 @@ public class PostoSaudeControllerV1 {
                 .build();
     }
 
+    @Operation(summary = "Remove um paciente de todos os postos de saúde",
+            description = "Endpoint restrito a serviços",
+            security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Paciente removido com sucesso"),
+            @ApiResponse(responseCode = "401",
+                    description = "Credenciais de acesso inválidas",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "403",
+                    description = "Token autenticado não é de serviço",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class))),
+    })
+    @PutMapping("/pacientes/remover/{pacienteId}")
+    public ResponseEntity<Void> servicoRemoverPaciente(@AuthenticationPrincipal Jwt jwt,
+                                                @PathVariable("pacienteId") Long pacienteId) {
+        if (!Objects.equals(TipoTokenEnum.valueOf((String) jwt.getClaims().get("tipo_token")), TipoTokenEnum.SERVICO))
+            throw new TipoTokenException();
+        log.info("Serviço {} removendo paciente {} de todos os postos de saúde", jwt.getSubject(), pacienteId);
+        postoSaudeController.removerPaciente(pacienteId);
+        log.info("Serviço {} removeu paciente {} de todos os postos de saúde", jwt.getSubject(), pacienteId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
     @Operation(summary = "Vincula um profissional da saúde a um posto de saúde",
             description = "Endpoint restrito a usuários GERENTE",
             security = @SecurityRequirement(name = "bearerAuth"))
@@ -345,6 +378,35 @@ public class PostoSaudeControllerV1 {
         log.info("Gerente {} removendo profissional da saúde {} do posto de saúde {}", jwt.getSubject(), profissionalSaudeId, postoSaudeId);
         postoSaudeController.removerProfissionalSaudePostoSaude(Long.valueOf(jwt.getSubject()), profissionalSaudeId, postoSaudeId);
         log.info("Gerente {} removeu profissional da saúde {} do posto de saúde {}", jwt.getSubject(), profissionalSaudeId, postoSaudeId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @Operation(summary = "Remove um profissional da saúde de um posto de saúde",
+            description = "Endpoint restrito a serviços",
+            security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Profissional da saúde removido com sucesso"),
+            @ApiResponse(responseCode = "401",
+                    description = "Credenciais de acesso inválidas",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class))),
+            @ApiResponse(responseCode = "403",
+                    description = "Token autenticado não é de serviço",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class))),
+    })
+    @PutMapping("/profissionais-saude/remover/{profissionalSaudeId}")
+    public ResponseEntity<Void> servicoRemoverProfissionalSaudePostoSaude(@AuthenticationPrincipal Jwt jwt,
+                                                                   @PathVariable("profissionalSaudeId") Long profissionalSaudeId) {
+        if (!Objects.equals(TipoTokenEnum.valueOf((String) jwt.getClaims().get("tipo_token")), TipoTokenEnum.SERVICO))
+            throw new TipoTokenException();
+        log.info("Serviço {} removendo profissional da saúde {} de todos os postos de saúde", jwt.getSubject(), profissionalSaudeId);
+        postoSaudeController.removerProfissionalSaudePostoSaude(profissionalSaudeId);
+        log.info("Serviço {} removeu profissional da saúde {} de todos os postos de saúde", jwt.getSubject(), profissionalSaudeId);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

@@ -45,4 +45,8 @@ public class RemoverProfissionalSaudePostoSaudeUseCase {
         notificacaoGateway.enviarNotificacao(new EnviarNotificacaoRequest(usuarioEmailPageResponse.getContent().getFirst(),
                 ASSUNTO_NOTIFICACAO, String.format(MENSAGEM_NOTIFICACAO, postoSaude.getNome())));
     }
+
+    public void executar(Long profissionalSaudeRemoverId) {
+        postoSaudeGateway.removerProfissionalSaude(profissionalSaudeRemoverId);
+    }
 }

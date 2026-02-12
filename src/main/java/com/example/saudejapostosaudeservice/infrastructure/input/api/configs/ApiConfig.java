@@ -45,9 +45,9 @@ public class ApiConfig {
                                 .requestMatchers(HttpMethod.PUT, "/api/v1/postos-saude/*").hasAuthority(TipoUsuarioEnum.GERENTE.name())
                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/postos-saude/*").hasAuthority(TipoUsuarioEnum.GERENTE.name())
                                 .requestMatchers(HttpMethod.GET, "/api/v1/postos-saude/pacientes/*").hasAnyAuthority(TipoUsuarioEnum.MEDICO.name(), TipoUsuarioEnum.ENFERMEIRO.name(), TipoUsuarioEnum.AGENTE_COMUNITARIO.name(), TipoUsuarioEnum.GERENTE.name())
-                                .requestMatchers(HttpMethod.PUT, "/api/v1/postos-saude/pacientes/remover/**").hasAuthority(TipoUsuarioEnum.AGENTE_COMUNITARIO.name())
+                                .requestMatchers(HttpMethod.PUT, "/api/v1/postos-saude/pacientes/remover/*/*").hasAuthority(TipoUsuarioEnum.AGENTE_COMUNITARIO.name())
                                 .requestMatchers(HttpMethod.PUT, "/api/v1/postos-saude/profissionais-saude/vincular/**").hasAuthority(TipoUsuarioEnum.GERENTE.name())
-                                .requestMatchers(HttpMethod.PUT, "/api/v1/postos-saude/profissionais-saude/remover/**").hasAuthority(TipoUsuarioEnum.GERENTE.name())
+                                .requestMatchers(HttpMethod.PUT, "/api/v1/postos-saude/profissionais-saude/remover/*/*").hasAuthority(TipoUsuarioEnum.GERENTE.name())
                                 .anyRequest().authenticated())
 
                 .exceptionHandling(exceptionHandling -> exceptionHandling

@@ -92,6 +92,16 @@ public class PostoSaudeController {
         useCase.executar(profissionalSaudeId, pacienteId, postoSaudeId);
     }
 
+    public void removerPaciente(Long pacienteId) {
+        PostoSaudeGateway postoSaudeGateway = new PostoSaudeGateway(postoSaudeDataSource);
+        SolicitacaoVinculoPacientePostoSaudeGateway solicitacaoVinculoPacientePostoSaudeGateway = new SolicitacaoVinculoPacientePostoSaudeGateway(solicitacaoVinculoPacientePostoSaudeDataSource);
+        UsuarioGateway usuarioGateway = new UsuarioGateway(usuarioDataSource);
+        NotificacaoGateway notificacaoGateway = new NotificacaoGateway(notificacaoDataSource);
+        RemoverPacientePostoSaudeUseCase useCase = new RemoverPacientePostoSaudeUseCase(postoSaudeGateway, solicitacaoVinculoPacientePostoSaudeGateway, usuarioGateway, notificacaoGateway);
+
+        useCase.executar(pacienteId);
+    }
+
     public void vincularProfissionalSaudePostoSaude(Long profissionalSaudeExecutandoId, Long profissionalSaudeVincularId, Long postoSaudeId) {
         PostoSaudeGateway postoSaudeGateway = new PostoSaudeGateway(postoSaudeDataSource);
         UsuarioGateway usuarioGateway = new UsuarioGateway(usuarioDataSource);
@@ -106,6 +116,14 @@ public class PostoSaudeController {
         NotificacaoGateway notificacaoGateway = new NotificacaoGateway(notificacaoDataSource);
         RemoverProfissionalSaudePostoSaudeUseCase useCase = new RemoverProfissionalSaudePostoSaudeUseCase(postoSaudeGateway, usuarioGateway, notificacaoGateway);
         useCase.executar(profissionalSaudeExecutandoId, profissionalSaudeRemoverId, postoSaudeId);
+    }
+
+    public void removerProfissionalSaudePostoSaude(Long profissionalSaudeRemoverId) {
+        PostoSaudeGateway postoSaudeGateway = new PostoSaudeGateway(postoSaudeDataSource);
+        UsuarioGateway usuarioGateway = new UsuarioGateway(usuarioDataSource);
+        NotificacaoGateway notificacaoGateway = new NotificacaoGateway(notificacaoDataSource);
+        RemoverProfissionalSaudePostoSaudeUseCase useCase = new RemoverProfissionalSaudePostoSaudeUseCase(postoSaudeGateway, usuarioGateway, notificacaoGateway);
+        useCase.executar(profissionalSaudeRemoverId);
     }
 
     public void apagarPostoSaude(Long profissionalSaudeId, Long postoSaudeId) {

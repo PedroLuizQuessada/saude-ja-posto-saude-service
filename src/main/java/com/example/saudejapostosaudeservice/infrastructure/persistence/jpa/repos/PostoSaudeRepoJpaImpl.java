@@ -172,6 +172,19 @@ public class PostoSaudeRepoJpaImpl implements PostoSaudeDataSource {
 
     @Override
     @Transactional
+    public void removerPaciente(Long pacienteId) {
+        String sql = """
+        DELETE FROM posto_pacientes
+        WHERE paciente_id = :pacienteId
+    """;
+
+        entityManager.createNativeQuery(sql)
+                .setParameter("pacienteId", pacienteId)
+                .executeUpdate();
+    }
+
+    @Override
+    @Transactional
     public void vincularProfissionalSaudePostoSaude(Long profissionalSaude, Long postoSaudeId) {
         PostoSaudeJpa postoSaudeJpa = entityManager.find(PostoSaudeJpa.class, postoSaudeId);
         postoSaudeJpa.getPacienteList().add(profissionalSaude);
@@ -182,6 +195,18 @@ public class PostoSaudeRepoJpaImpl implements PostoSaudeDataSource {
     public void removerProfissionalSaude(Long profissionalSaude, Long postoSaudeId) {
         PostoSaudeJpa postoSaudeJpa = entityManager.find(PostoSaudeJpa.class, postoSaudeId);
         postoSaudeJpa.getPacienteList().remove(profissionalSaude);
+    }
+
+    @Override
+    public void removerProfissionalSaude(Long profissionalSaude) {
+        String sql = """
+        DELETE FROM posto_profissionais_saude
+        WHERE profissional_saude_id = :profissionalSaude
+    """;
+
+        entityManager.createNativeQuery(sql)
+                .setParameter("profissionalSaude", profissionalSaude)
+                .executeUpdate();
     }
 
     @Override

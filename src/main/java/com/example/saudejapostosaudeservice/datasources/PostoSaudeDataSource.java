@@ -19,7 +19,9 @@ public interface PostoSaudeDataSource {
     Long countByProfissionalSaudeAndPostoSaude(Long profissionalSaudeId, Long postoSaudeId);
     void vincularPaciente(Long pacienteId, Long postoSaudeId);
     void removerPaciente(Long pacienteId, Long postoSaudeId);
+    void removerPaciente(Long pacienteId);
     void vincularProfissionalSaudePostoSaude(Long profissionalSaude, Long postoSaudeId);
     void removerProfissionalSaude(Long profissionalSaude, Long postoSaudeId);
+    void removerProfissionalSaude(Long profissionalSaude);
     void deletePostoSaudeById(Long postoSaudeId);
 }

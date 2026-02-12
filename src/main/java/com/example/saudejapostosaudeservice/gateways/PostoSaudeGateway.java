@@ -72,12 +72,20 @@ public class PostoSaudeGateway {
         postoSaudeDataSource.removerPaciente(pacienteId, postoSaudeId);
     }
 
+    public void removerPaciente(Long pacienteId) {
+        postoSaudeDataSource.removerPaciente(pacienteId);
+    }
+
     public void vincularProfissionalSaudePostoSaude(Long profissionalSaude, Long postoSaudeId) {
         postoSaudeDataSource.vincularProfissionalSaudePostoSaude(profissionalSaude, postoSaudeId);
     }
 
     public void removerProfissionalSaude(Long profissionalSaudeId, Long postoSaudeId) {
         postoSaudeDataSource.removerProfissionalSaude(profissionalSaudeId, postoSaudeId);
+    }
+
+    public void removerProfissionalSaude(Long profissionalSaudeId) {
+        postoSaudeDataSource.removerProfissionalSaude(profissionalSaudeId);
     }
 
     public void deletePostoSaudeById(Long postoSaudeId) {

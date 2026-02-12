@@ -50,4 +50,9 @@ public class RemoverPacientePostoSaudeUseCase {
         notificacaoGateway.enviarNotificacao(new EnviarNotificacaoRequest(usuarioEmailPageResponse.getContent().getFirst(),
                 ASSUNTO_NOTIFICACAO, String.format(MENSAGEM_NOTIFICACAO, postoSaude.getNome())));
     }
+
+    public void executar(Long pacienteId) {
+        postoSaudeGateway.removerPaciente(pacienteId);
+        solicitacaoVinculoPacientePostoSaudeGateway.deleteByPacienteId(pacienteId);
+    }
 }
