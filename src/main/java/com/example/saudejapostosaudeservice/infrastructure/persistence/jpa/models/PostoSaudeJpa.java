@@ -23,7 +23,7 @@ public class PostoSaudeJpa {
     private Long id;
 
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nome;
 
     @Setter
