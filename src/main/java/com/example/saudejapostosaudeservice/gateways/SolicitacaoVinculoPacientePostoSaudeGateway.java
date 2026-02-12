@@ -42,4 +42,8 @@ public class SolicitacaoVinculoPacientePostoSaudeGateway {
     public void deleteByPostoSaudeId(Long postoSaudeId) {
         solicitacaoVinculoPacientePostoSaudeDataSource.deleteByPostoSaudeId(postoSaudeId);
     }
+
+    public void deleteByPacienteId(Long pacienteId) {
+        solicitacaoVinculoPacientePostoSaudeDataSource.deleteByPacienteId(pacienteId);
+    }
 }

@@ -71,4 +71,12 @@ public class SolicitacaoContaUsuarioRepoJpaImpl implements SolicitacaoVinculoPac
         query.setParameter("postoSaude", postoSaudeId);
         query.executeUpdate();
     }
+
+    @Override
+    @Transactional
+    public void deleteByPacienteId(Long pacienteId) {
+        Query query = entityManager.createQuery("DELETE FROM SolicitacaoVinculoPacientePostoSaudeJpa solicitacaoVinculoPacientePostoSaude WHERE solicitacaoVinculoPacientePostoSaude.paciente = :pacienteId");
+        query.setParameter("pacienteId", pacienteId);
+        query.executeUpdate();
+    }
 }

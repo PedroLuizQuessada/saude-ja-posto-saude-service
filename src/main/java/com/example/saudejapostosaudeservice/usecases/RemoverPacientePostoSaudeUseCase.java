@@ -5,6 +5,7 @@ import com.example.saudejapostosaudeservice.exceptions.BadArgumentException;
 import com.example.saudejapostosaudeservice.exceptions.NaoEncontradoException;
 import com.example.saudejapostosaudeservice.gateways.NotificacaoGateway;
 import com.example.saudejapostosaudeservice.gateways.PostoSaudeGateway;
+import com.example.saudejapostosaudeservice.gateways.SolicitacaoVinculoPacientePostoSaudeGateway;
 import com.example.saudejapostosaudeservice.gateways.UsuarioGateway;
 import dtos.requests.EnviarNotificacaoRequest;
 import dtos.requests.PacienteIdPageRequest;
@@ -19,11 +20,13 @@ public class RemoverPacientePostoSaudeUseCase {
     private static final String MENSAGEM_NOTIFICACAO = "Seu usuário foi removido como paciente do posto de saúde %s.";
 
     private final PostoSaudeGateway postoSaudeGateway;
+    private final SolicitacaoVinculoPacientePostoSaudeGateway solicitacaoVinculoPacientePostoSaudeGateway;
     private final UsuarioGateway usuarioGateway;
     private final NotificacaoGateway notificacaoGateway;
 
-    public RemoverPacientePostoSaudeUseCase(PostoSaudeGateway postoSaudeGateway, UsuarioGateway usuarioGateway, NotificacaoGateway notificacaoGateway) {
+    public RemoverPacientePostoSaudeUseCase(PostoSaudeGateway postoSaudeGateway, SolicitacaoVinculoPacientePostoSaudeGateway solicitacaoVinculoPacientePostoSaudeGateway, UsuarioGateway usuarioGateway, NotificacaoGateway notificacaoGateway) {
         this.postoSaudeGateway = postoSaudeGateway;
+        this.solicitacaoVinculoPacientePostoSaudeGateway = solicitacaoVinculoPacientePostoSaudeGateway;
         this.usuarioGateway = usuarioGateway;
         this.notificacaoGateway = notificacaoGateway;
     }
@@ -43,6 +46,7 @@ public class RemoverPacientePostoSaudeUseCase {
             throw new NaoEncontradoException(String.format("E-mail do paciente %d não encontrado.", pacienteId));
 
         postoSaudeGateway.removerPaciente(pacienteId, postoSaudeId);
+        solicitacaoVinculoPacientePostoSaudeGateway.deleteByPacienteId(pacienteId);
         notificacaoGateway.enviarNotificacao(new EnviarNotificacaoRequest(usuarioEmailPageResponse.getContent().getFirst(),
                 ASSUNTO_NOTIFICACAO, String.format(MENSAGEM_NOTIFICACAO, postoSaude.getNome())));
     }

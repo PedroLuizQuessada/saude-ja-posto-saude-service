@@ -84,9 +84,10 @@ public class PostoSaudeController {
 
     public void removerPaciente(Long profissionalSaudeId, Long pacienteId, Long postoSaudeId) {
         PostoSaudeGateway postoSaudeGateway = new PostoSaudeGateway(postoSaudeDataSource);
+        SolicitacaoVinculoPacientePostoSaudeGateway solicitacaoVinculoPacientePostoSaudeGateway = new SolicitacaoVinculoPacientePostoSaudeGateway(solicitacaoVinculoPacientePostoSaudeDataSource);
         UsuarioGateway usuarioGateway = new UsuarioGateway(usuarioDataSource);
         NotificacaoGateway notificacaoGateway = new NotificacaoGateway(notificacaoDataSource);
-        RemoverPacientePostoSaudeUseCase useCase = new RemoverPacientePostoSaudeUseCase(postoSaudeGateway, usuarioGateway, notificacaoGateway);
+        RemoverPacientePostoSaudeUseCase useCase = new RemoverPacientePostoSaudeUseCase(postoSaudeGateway, solicitacaoVinculoPacientePostoSaudeGateway, usuarioGateway, notificacaoGateway);
 
         useCase.executar(profissionalSaudeId, pacienteId, postoSaudeId);
     }

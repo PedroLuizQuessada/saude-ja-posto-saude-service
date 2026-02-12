@@ -10,4 +10,5 @@ public interface SolicitacaoVinculoPacientePostoSaudeDataSource {
     Optional<SolicitacaoVinculoPacientePostoSaudeDto> getSolicitacaoVinculoPacientePostoSaudeDtoById(Long id);
     void consumirSolicitacaoContaUsuario(SolicitacaoVinculoPacientePostoSaudeDto solicitacaoVinculoPacientePostoSaudeDto);
     void deleteByPostoSaudeId(Long postoSaudeId);
+    void deleteByPacienteId(Long pacienteId);
 }
