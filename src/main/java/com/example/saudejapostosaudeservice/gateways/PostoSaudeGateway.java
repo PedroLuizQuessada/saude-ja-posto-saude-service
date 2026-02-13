@@ -60,6 +60,10 @@ public class PostoSaudeGateway {
         return postoSaudeDataSource.countByPacienteAndPostoSaude(pacienteId, postoSaudeId) != 0;
     }
 
+    public boolean isPostoSaudeContainsAnyProfissionalSaude(Long postoSaudeId) {
+        return postoSaudeDataSource.countProfissionaisSaudeByPostoSaude(postoSaudeId) > 0;
+    }
+
     public boolean isPostoSaudeContainsProfissionalSaude(Long profissionalSaudeId, Long postoSaudeId) {
         return postoSaudeDataSource.countByProfissionalSaudeAndPostoSaude(profissionalSaudeId, postoSaudeId) != 0;
     }

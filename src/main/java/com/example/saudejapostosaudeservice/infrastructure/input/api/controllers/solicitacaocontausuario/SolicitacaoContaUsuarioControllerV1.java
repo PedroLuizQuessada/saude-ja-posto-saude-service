@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -35,7 +36,8 @@ public class SolicitacaoContaUsuarioControllerV1 {
     }
 
     @Operation(summary = "Solicita o vínculo de um paciente com um posto de saúde",
-            description = "Endpoint restrito a usuários PACIENTE")
+            description = "Endpoint restrito a usuários PACIENTE",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
             @ApiResponse(responseCode = "201",
                     description = "Solicitação criada com sucesso",
@@ -71,7 +73,8 @@ public class SolicitacaoContaUsuarioControllerV1 {
     }
 
     @Operation(summary = "Consome solicitação de vínculo do paciente em posto de saúde",
-            description = "Endpoint restrito a usuários AGENTE_COMUNITARIO")
+            description = "Endpoint restrito a usuários AGENTE_COMUNITARIO",
+            security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "Solicitação consumida e usuário paciente vinculado com sucesso"),

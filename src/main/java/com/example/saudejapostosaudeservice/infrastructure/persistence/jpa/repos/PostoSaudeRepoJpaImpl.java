@@ -142,18 +142,40 @@ public class PostoSaudeRepoJpaImpl implements PostoSaudeDataSource {
 
     @Override
     public Long countByPacienteAndPostoSaude(Long pacienteId, Long postoSaudeId) {
-        Query query = entityManager.createQuery("SELECT count(*) FROM PostoSaudeJpa postoSaude WHERE postoSaude.pacienteList = :pacienteId AND postoSaude.id = :postoSaudeId");
-        query.setParameter("pacienteId", pacienteId);
-        query.setParameter("postoSaudeId", postoSaudeId);
-        return (Long) query.getSingleResult();
+        String sql = """
+        SELECT count(*) FROM posto_pacientes
+        WHERE paciente_id = :pacienteId AND  posto_id = :postoSaudeId
+    """;
+
+        return (Long) entityManager.createNativeQuery(sql)
+                .setParameter("pacienteId", pacienteId)
+                .setParameter("postoSaudeId", postoSaudeId)
+                .getSingleResult();
+    }
+
+    @Override
+    public Long countProfissionaisSaudeByPostoSaude(Long postoSaudeId) {
+        String sql = """
+        SELECT count(*) FROM posto_profissionais_saude
+        WHERE posto_id = :postoSaudeId
+    """;
+
+        return (Long) entityManager.createNativeQuery(sql)
+                .setParameter("postoSaudeId", postoSaudeId)
+                .getSingleResult();
     }
 
     @Override
     public Long countByProfissionalSaudeAndPostoSaude(Long profissionalSaudeId, Long postoSaudeId) {
-        Query query = entityManager.createQuery("SELECT count(*) FROM PostoSaudeJpa postoSaude WHERE postoSaude.profissionalSaudeList = :profissionalSaudeId AND postoSaude.id = :postoSaudeId");
-        query.setParameter("profissionalSaudeId", profissionalSaudeId);
-        query.setParameter("postoSaudeId", postoSaudeId);
-        return (Long) query.getSingleResult();
+        String sql = """
+        SELECT count(*) FROM posto_profissionais_saude
+        WHERE profissional_saude_id = :profissionalSaudeId AND  posto_id = :postoSaudeId
+    """;
+
+        return (Long) entityManager.createNativeQuery(sql)
+                .setParameter("profissionalSaudeId", profissionalSaudeId)
+                .setParameter("postoSaudeId", postoSaudeId)
+                .getSingleResult();
     }
 
     @Override
@@ -187,14 +209,14 @@ public class PostoSaudeRepoJpaImpl implements PostoSaudeDataSource {
     @Transactional
     public void vincularProfissionalSaudePostoSaude(Long profissionalSaude, Long postoSaudeId) {
         PostoSaudeJpa postoSaudeJpa = entityManager.find(PostoSaudeJpa.class, postoSaudeId);
-        postoSaudeJpa.getPacienteList().add(profissionalSaude);
+        postoSaudeJpa.getProfissionalSaudeList().add(profissionalSaude);
     }
 
     @Override
     @Transactional
     public void removerProfissionalSaude(Long profissionalSaude, Long postoSaudeId) {
         PostoSaudeJpa postoSaudeJpa = entityManager.find(PostoSaudeJpa.class, postoSaudeId);
-        postoSaudeJpa.getPacienteList().remove(profissionalSaude);
+        postoSaudeJpa.getProfissionalSaudeList().remove(profissionalSaude);
     }
 
     @Override

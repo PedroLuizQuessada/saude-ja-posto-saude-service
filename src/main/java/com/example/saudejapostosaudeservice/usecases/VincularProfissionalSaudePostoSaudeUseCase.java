@@ -30,7 +30,8 @@ public class VincularProfissionalSaudePostoSaudeUseCase {
 
     public void executar(Long profissionalSaudeExecutandoId, Long profissionalSaudeVincularId, Long postoSaudeId) {
         PostoSaude postoSaude = postoSaudeGateway.getPostoSaudeById(postoSaudeId);
-        if (!postoSaudeGateway.isPostoSaudeContainsProfissionalSaude(profissionalSaudeExecutandoId, postoSaudeId))
+        if (postoSaudeGateway.isPostoSaudeContainsAnyProfissionalSaude(postoSaudeId) &&
+                !postoSaudeGateway.isPostoSaudeContainsProfissionalSaude(profissionalSaudeExecutandoId, postoSaudeId))
             throw new BadArgumentException("O profissional da saúde não faz parte do posto de saúde informado.");
 
         if (postoSaudeGateway.isPostoSaudeContainsProfissionalSaude(profissionalSaudeVincularId, postoSaudeId))
@@ -42,7 +43,7 @@ public class VincularProfissionalSaudePostoSaudeUseCase {
             throw new NaoEncontradoException(String.format("E-mail do profissional da saúde %d não encontrado.", profissionalSaudeVincularId));
 
         postoSaudeGateway.vincularProfissionalSaudePostoSaude(profissionalSaudeVincularId, postoSaudeId);
-        notificacaoGateway.enviarNotificacao(new EnviarNotificacaoRequest(usuarioEmailPageResponse.getContent().getFirst(),
-                ASSUNTO_NOTIFICACAO, String.format(MENSAGEM_NOTIFICACAO, postoSaude.getNome())));
+//        notificacaoGateway.enviarNotificacao(new EnviarNotificacaoRequest(usuarioEmailPageResponse.getContent().getFirst(),
+//                ASSUNTO_NOTIFICACAO, String.format(MENSAGEM_NOTIFICACAO, postoSaude.getNome())));
     }
 }

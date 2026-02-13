@@ -16,6 +16,7 @@ public interface PostoSaudeDataSource {
     PacienteIdDtoPage getPacienteList(int page, int size, boolean ord, Long postoSaudeId);
     ProfissionalSaudeIdDtoPage getProfissionalSaudeList(int page, int size, boolean ord, Long postoSaudeId);
     Long countByPacienteAndPostoSaude(Long pacienteId, Long postoSaudeId);
+    Long countProfissionaisSaudeByPostoSaude(Long postoSaudeId);
     Long countByProfissionalSaudeAndPostoSaude(Long profissionalSaudeId, Long postoSaudeId);
     void vincularPaciente(Long pacienteId, Long postoSaudeId);
     void removerPaciente(Long pacienteId, Long postoSaudeId);
